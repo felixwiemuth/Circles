@@ -16,8 +16,6 @@
  */
 package circles.api;
 
-import java.awt.Color;
-
 /**
  *
  * @author Felix Wiemuth

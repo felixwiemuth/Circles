@@ -20,7 +20,6 @@ import circles.api.CircleDrawable;
 import circles.api.Simulation;
 import circles.backend.AbstractRenderer;
 import com.sun.opengl.util.Animator;
-import com.sun.opengl.util.FPSAnimator;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -32,10 +31,10 @@ import javax.media.opengl.glu.GLU;
 
 public class CirclesRenderer extends AbstractRenderer implements GLEventListener {
 
-    private FPSAnimator animator;
+    private Animator animator;
 
-    public CirclesRenderer(Simulation simulation, int simulationSpeed) {
-        super(simulation, simulationSpeed);
+    public CirclesRenderer(Simulation simulation) {
+        super(simulation);
     }
 
     @Override
@@ -48,7 +47,7 @@ public class CirclesRenderer extends AbstractRenderer implements GLEventListener
         frame.add(canvas);
         frame.setSize(640, 480);
         frame.setResizable(false);
-        animator = new FPSAnimator(canvas, getFps());
+        animator = new Animator(canvas);
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -105,11 +104,8 @@ public class CirclesRenderer extends AbstractRenderer implements GLEventListener
 
     @Override
     public void display(GLAutoDrawable drawable) {
-        step();
+        simulationUpdate();
         render(drawable);
-    }
-
-    private void update() {
     }
 
     private void render(GLAutoDrawable drawable) {
@@ -189,10 +185,5 @@ public class CirclesRenderer extends AbstractRenderer implements GLEventListener
     @Override
     public void pause() {
         animator.stop();
-    }
-    
-    public void setFps2(int fps) {
-        setFps(fps);
-        //animator.() set fps...?
     }
 }

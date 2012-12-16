@@ -26,18 +26,33 @@ import circles.api.CollisionHandler;
  * @author Felix Wiemuth
  */
 public class Simulator extends AbstractSimulator {
-    private int precision = 1; //number of calculations to perform per step (call of 'simulate()'
+
+    private int stepPrecision = 1; //number of calculations to perform per step (call of 'simulate()'
+    private double stepFactor = 1 / stepPrecision; // 1/stepPrecision
+    private int stepInterval = 100; //milliseconds between two simulation steps
+    private long lastStep = System.currentTimeMillis(); //system time when last step was simulated
+    boolean run = false;
 
     public Simulator(CollisionHandler collisionHandler) {
         super(collisionHandler);
     }
-    
+
     @Override
-    public void simulate(double time) {
-        double factor = time / precision;
-        for (int i = 0; i < precision; i++) {
+    public void simulate() {
+        if (!run) {
+            return;
+        }
+        long time = System.currentTimeMillis(); //take time snapshot: avoid infinite loop if calculation is slower then time progression
+        while (lastStep < time) {
+            lastStep += stepInterval;
+            calculateStep();
+        }
+    }
+
+    private void calculateStep() {
+        for (int i = 0; i < stepPrecision; i++) {
             for (Circle c : circles) {
-                c.move(factor);
+                c.move(stepPrecision);
             }
             for (Collision c : getCollisions()) {
                 collisionHandler.handleCollision(c, circles);
@@ -54,4 +69,30 @@ public class Simulator extends AbstractSimulator {
     public void addCirlce(Circle circle) {
         circles.add(circle);
     }
+
+    @Override
+    public void play() {
+        lastStep = System.currentTimeMillis();
+        run = true;
+    }
+
+    @Override
+    public void pause() {
+        run = false;
+    }
+
+    public void setPrecision(int precision) {
+        stepPrecision = precision;
+        stepFactor = 1 / stepPrecision;
+    }
+
+    /**
+     * Lower number is faster.
+     * @param speed 
+     */
+    public void setSpeed(int speed) {
+        this.stepInterval = speed;
+    }
+    
+    
 }

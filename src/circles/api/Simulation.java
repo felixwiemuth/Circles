@@ -21,8 +21,14 @@ package circles.api;
  * @author Felix Wiemuth
  */
 public interface Simulation {
-    public void simulate(double time);
+
+    public void play();
+
+    public void pause();
+
+    public void simulate();
+
     public Iterable<? extends CircleDrawable> getCircles();
+
     public void addCirlce(Circle circle);
-    
 }

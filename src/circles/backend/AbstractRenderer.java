@@ -19,54 +19,29 @@ package circles.backend;
 import circles.api.Simulation;
 
 /**
- * Base class for simulation renderers.
- * Note: Implementing renderer must use FPS from 'getFps()' and call 'step()'
- * before or after each rendered frame to ensure steady simulation speed.
+ * Base class for simulation renderers. Note: Implementing renderer should call
+ * 'simulationUpdate()' during each rendering loop.
+ *
  * @author Felix Wiemuth
  */
 public abstract class AbstractRenderer {
+
     protected Simulation simulation;
-    private double simulationSpeed = 1;
-    //private int simulationPrecision = 1; //1,2,...
-    private int fps = 0; //0: vsync, -1: maximum
-    private double spf = 1; //simulation steps per frame
-    //private double ssp = 0; //simulation steps pending
-    private boolean fps_changed = true;
-    
+
     public abstract void startUp();
+
     public abstract void play();
+
     public abstract void pause();
 
-    public AbstractRenderer(Simulation simulation, int simulationSpeed) {
+    public AbstractRenderer(Simulation simulation) {
         this.simulation = simulation;
-        this.simulationSpeed = simulationSpeed;
     }
 
-    protected int getFps() {
-        return fps;
+    /**
+     * Simulate if necessary.
+     */
+    protected void simulationUpdate() {
+        simulation.simulate();
     }
-    
-    protected void setFps(int fps) {
-        this.fps = fps;
-        fps_changed = true;
-    }
-    
-    protected void step() {
-        //recalculate spf
-        if (fps_changed) {
-            fps_changed = false;
-            spf = simulationSpeed / fps;
-        }
-//        //add pending simulation steps
-//        ssp += spf;
-//        //check if simulator has to simulate
-//        while (ssp >= 1) {
-//            ssp--;
-//        }
-        simulation.simulate(spf);
-    }
-    
-    
-    
-    
 }
