@@ -52,7 +52,7 @@ public class Simulator extends AbstractSimulator {
     private void calculateStep() {
         for (int i = 0; i < stepPrecision; i++) {
             for (Circle c : circles) {
-                c.move(stepPrecision);
+                c.move(stepFactor);
             }
             for (Collision c : getCollisions()) {
                 collisionHandler.handleCollision(c, circles);
@@ -83,7 +83,7 @@ public class Simulator extends AbstractSimulator {
 
     public void setPrecision(int precision) {
         stepPrecision = precision;
-        stepFactor = 1 / stepPrecision;
+        stepFactor = (double)1 / stepPrecision;
     }
 
     /**
