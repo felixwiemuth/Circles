@@ -29,22 +29,37 @@ public abstract class AbstractSimulator implements Simulation {
 
     protected Set<Circle> circles = new HashSet<Circle>();
     protected CollisionHandler collisionHandler;
+    private List<Collision> collisions; //current collisions
+    private List<Circle> notColliding; //current circles that are not part of a collision
 
     public AbstractSimulator(CollisionHandler collisionHandler) {
         this.collisionHandler = collisionHandler;
     }
     
-    public List<Collision> getCollisions() {
+    protected void doCollisionCalculations() {
         Circle[] c = (Circle[]) circles.toArray(new Circle[0]);
-        List<Collision> collisions = new ArrayList<Collision>();
+        collisions = new ArrayList<Collision>();
+        notColliding = new ArrayList<Circle>();
         
         for (int i = 0; i < circles.size(); i++) {
             for (int j = i+1; j < circles.size(); j++) {
                 if (c[i].collides(c[j])) {
                     collisions.add(new Collision(c[i], c[j]));
+                } else {
+                    notColliding.add(c[i]);
+                    notColliding.add(c[j]);
                 }
             }
         }
+    }
+    
+    protected List<Collision> getCollisions() {
         return collisions;
     }
+
+    protected List<Circle> getNotColliding() {
+        return notColliding;
+    }
+    
+    
 }

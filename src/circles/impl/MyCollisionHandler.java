@@ -29,10 +29,34 @@ public class MyCollisionHandler implements CollisionHandler {
 
     @Override
     public void handleCollision(Collision c, Set<Circle> circles) {
-        if (c.c1().getRadius() < c.c2().getRadius()) {
-            c.c1().setVx(-c.c1().getVx());
-            c.c1().setVy(-c.c1().getVy());
+        if (!c.c1().isActive() || !c.c2().isActive()) {
+            return;
         }
+        c.c1().setActive(false);
+        c.c2().setActive(false);
+        //TODO active / unactive control (set, unset, ...)
+        //DEBUG
+        System.out.println("Collision! - C1=" + c.c1().getGroupID() + " C2=" + c.c2().getGroupID());
+        c.c1().setVx(
+                (c.c1().getVx() * (c.c1().getMass() - c.c2().getMass())
+                + 2 * c.c2().getMass() * c.c2().getVx())
+                / (c.c1().getMass() + c.c2().getMass())
+        );
+        c.c1().setVy(
+                (c.c1().getVy() * (c.c1().getMass() - c.c2().getMass())
+                + 2 * c.c2().getMass() * c.c2().getVy())
+                / (c.c1().getMass() + c.c2().getMass())
+        );
+        c.c2().setVx(
+                (c.c2().getVx() * (c.c2().getMass() - c.c1().getMass())
+                + 2 * c.c1().getMass() * c.c1().getVx())
+                / (c.c2().getMass() + c.c1().getMass())
+        );
+        c.c2().setVy(
+                (c.c2().getVy() * (c.c2().getMass() - c.c1().getMass())
+                + 2 * c.c1().getMass() * c.c1().getVy())
+                / (c.c2().getMass() + c.c1().getMass())
+        );
     }
     
 }

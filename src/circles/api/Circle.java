@@ -28,13 +28,15 @@ public class Circle implements CircleDrawable {
     private double vx = 0;
     private double vy = 0;
     private double radius;
+    private double mass;
     private int groupID;
     private boolean active;
 
-    public Circle(double posX, double posY, double radius) {
+    public Circle(double posX, double posY, double radius, double mass) {
         this.posX = posX;
         this.posY = posY;
         this.radius = radius;
+        this.mass = mass;
         this.groupID = defaultGroupID;
         active = false;
     }
@@ -62,6 +64,10 @@ public class Circle implements CircleDrawable {
         return vy;
     }
 
+    public double getMass() {
+        return mass;
+    }
+
     public boolean isActive() {
         return active;
     }
@@ -73,6 +79,10 @@ public class Circle implements CircleDrawable {
 
     public void setGroupID(int groupID) {
         this.groupID = groupID;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void move(double factor) {

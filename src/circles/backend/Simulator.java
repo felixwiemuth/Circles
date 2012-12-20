@@ -54,6 +54,10 @@ public class Simulator extends AbstractSimulator {
             for (Circle c : circles) {
                 c.move(stepFactor);
             }
+            doCollisionCalculations();
+            for (Circle c : getNotColliding()) {
+                c.setActive(true);
+            }
             for (Collision c : getCollisions()) {
                 collisionHandler.handleCollision(c, circles);
             }
