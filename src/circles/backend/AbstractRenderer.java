@@ -16,6 +16,7 @@
  */
 package circles.backend;
 
+import circles.api.CircleDrawable;
 import circles.api.Simulation;
 
 /**
@@ -26,7 +27,7 @@ import circles.api.Simulation;
  */
 public abstract class AbstractRenderer {
 
-    protected Simulation simulation;
+    private Simulation simulation;
 
     public abstract void startUp();
 
@@ -36,6 +37,14 @@ public abstract class AbstractRenderer {
 
     public AbstractRenderer(Simulation simulation) {
         this.simulation = simulation;
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    protected Iterable<? extends CircleDrawable> getCircles() {
+        return simulation.getCircles();
     }
 
     /**

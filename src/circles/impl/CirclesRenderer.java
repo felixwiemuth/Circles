@@ -108,8 +108,11 @@ public class CirclesRenderer extends AbstractRenderer implements GLEventListener
         render(drawable);
     }
 
+    /*
+     * The basis for the code of this method is taken from:
+     * http://wiki.tankaar.com/index.php?title=Drawing_First_2D_Graphics_in_JOGL
+     */
     private void render(GLAutoDrawable drawable) {
-        //System.out.println("DISPLAY CALLED");
         GL gl = drawable.getGL();
         //Projection mode is for setting camera
         gl.glMatrixMode(GL.GL_PROJECTION);
@@ -130,15 +133,11 @@ public class CirclesRenderer extends AbstractRenderer implements GLEventListener
         //two consecutively overlapping graphic objects)
         gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
         gl.glEnable(GL.GL_BLEND);
-        //After this we start the drawing of object  
 
         //Draw circle
-        //TODO: for each not working?
-        for (CircleDrawable c : simulation.getCircles()) {
+        for (CircleDrawable c : getCircles()) {
             drawCircle(gl, c);
         }
-        //drawCircle(gl, new Circle(0, 0, 20));
-
 
         gl.glFlush();
     }
